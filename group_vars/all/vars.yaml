@@ -1,26 +1,3 @@
-ovirt:
-  username: admin@internal
-  ca_file: /etc/pki/ovirt-engine/ca.pem
-  password: toor
-  data_center: Default
-  cluster: Default
-  host: host.mylab.com
-  engine: manager.mylab.com
-  storage:
-     interface: virtio
-     storage_domain: hosted_storage
-  network:
-    external:
-       interface: virtio
-       profile: ovirtmgmt
-       network: ovirtmgmt
-    internal:
-       interface: virtio
-       profile: ocp
-       network: ocp
-       host_interface: em2
-
-
 networking:
   internal_network: 172.22.0.0
   internal_network_ip: 172.22.0.1

@@ -4,16 +4,25 @@ This sets of playbooks will setup oVirt networking and a Bastion vm for running 
 
 # Features
 
-- Vlan creation (for internal network)
+- Vlan creation (for OCP internal network)
 - Auto template creation for vm (centos 8 cloud)
 - Interface and connection name are autodetected
 - Bastion vm creation and configuration (using cloud-init)
+- Ip reservation for OCP
+- Dhcp server for internal network
+- Haproxy configuration (listening on bastion public interface)
+- Dns listening on the internal network
 
 The bastion vm services are:
-- default gateway for openshift nodes
+- default gateway for openshift nodes connected to the internal network
 - dhcp server
 - dns server
 - haproxy (both api and application)
+
+# Name resolutions
+
+The workstation must be able to resolve the bastion vm fqdn for api.<cluster_name>.<domain> and *.apps.<cluster_name>.<domain>
+The bastion vm must be able to resolve the oVirt engine fqdn
 
 
 # Sample vars config
@@ -21,29 +30,6 @@ The bastion vm services are:
 file: groups_vars/all/vars.yaml
 
 ```
-ovirt:
-  username: admin@internal
-  ca_file: /etc/pki/ovirt-engine/ca.pem
-  password: <pass>
-  data_center: Default
-  cluster: Default
-  host: host.mylab.com
-  engine: manager.mylab.com
-  storage:
-     interface: virtio
-     storage_domain: hosted_storage
-  network:
-    external:
-       interface: virtio
-       profile: ovirtmgmt
-       network: ovirtmgmt
-    internal:
-       interface: virtio
-       profile: ocp
-       network: ocp
-       host_interface: em2
-
-
 networking:
   internal_network: 172.22.0.0
   internal_network_ip: 172.22.0.1
@@ -72,17 +58,44 @@ firewall_public_ha_proxy_port:
   - 80/tcp
   - 443/tcp
   - 6443/tcp
-  
 
 ocp:
   reserved_ip:
-    api: 172.22.0.2
-    apps: 172.22.0.3
-    internal_dns: 172.22.0.4 # Used by installer
+    api: 172.22.0.2 # Asked during OCP install
+    apps: 172.22.0.3 # Asked during OCP install
+    internal_dns: 172.22.0.4 # Asked during OCP install
   cluster_name: ocp
   domain: mylab.com
 
 ```
+
+file: groups_vars/all/ovirt.yaml
+
+```
+ovirt:
+  username: admin@internal
+  ca_file: /etc/pki/ovirt-engine/ca.pem
+  password: XXX
+  data_center: Default
+  cluster: Default
+  host: host.mylab.com
+  engine: manager.mylab.com
+  storage:
+     interface: virtio
+     storage_domain: hosted_storage
+  network:
+    external:
+       interface: virtio
+       profile: ovirtmgmt
+       network: ovirtmgmt
+    internal:
+       interface: virtio
+       profile: ocp
+       network: ocp
+       host_interface: em2 #Insert oVirt host interface name
+
+```
+
 
 # Required python packages and version
 
@@ -96,27 +109,26 @@ ocp:
 - ovirt.vm-infra
 
 
-# Tested with Fedora 31 base os and Centos 8 Minimal #
+# The bastion vm is tested with Centos 8 Cloud #
 
-Get an openshift pullSecret from  https://cloud.redhat.com/openshift/install  -> Run on Bare Metal
-
-Set the pullSecret in group_vars/vars.yaml
+- Get the openshift installer from  https://cloud.redhat.com/openshift/install  -> Run on RHV
+- Get the oc cli
+- Get an openshift pullSecret
+- Set the pullSecret in group_vars/vars.yaml
 
 The interface and connection name are autodetected
 
-run: ansible-playbook connected_install.yaml for setup all the machines from scratch
+- run $ansible-playbook connected_ipi_install.yaml
 
-Masters node are set unschedulable.  
+- run the openshift installer as documented here:
+
+- https://docs.openshift.com/container-platform/4.5/installing/installing_rhv/installing-rhv-default.html#installing-rhv-default
 
 Depending on the connection speed:
   - take a coffe
   - watch a movie
 
 
-# TO DO
-
-- Remove some duplicated vars
-- Refactor
 
 
 
