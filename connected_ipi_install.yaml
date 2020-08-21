@@ -1,0 +1,7 @@
+---
+- import_playbook: include/000_ovirt_net_provisioning.yaml
+- import_playbook: include/001_ovirt_bastion_lb_provisioning_roles.yaml
+- import_playbook: include/002_bastion_packages.yaml
+- import_playbook: include/003_networking_pre_check.yaml
+- import_playbook: include/005_bastion_networking.yaml
+- import_playbook: include/007_bastion_services.yaml

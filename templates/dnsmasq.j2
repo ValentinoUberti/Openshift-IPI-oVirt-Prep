@@ -1,0 +1,23 @@
+## External dns ##
+server={{ networking.external_dns }}
+## External dns end ##
+
+
+## Required fqdn and wildcard for OCP ##
+address=/{{ 'api.' +  ocp.cluster_name  + '.' +  ocp.domain }}/{{ ocp.reserved_ip.api }}
+address=/{{ 'apps' +  ocp.cluster_name  + '.' +  ocp.domain }}/{{ ocp.reserved_ip.apps }}
+
+## Required fqdn and wildcard for OCP end ##
+
+
+## DHCP ##
+dhcp-option=101,"{{ dhcp.timezone }}"
+domain={{ networking.domain_name }}
+no-dhcp-interface={{ ansible_local.external_connection.ifname }}
+interface={{ ansible_local.internal_connection.ifname }}
+dhcp-option=option:netmask,{{ networking.internal_network_netmask }}
+dhcp-option=option:dns-server,{{ networking.internal_network_ip }}
+dhcp-option=option:ntp-server,{{ dhcp.ntp }}
+dhcp-range={{ansible_local.internal_connection.ifname }},{{ dhcp.start }},{{ dhcp.end }},12h
+## DHCP end ##
+

@@ -1,0 +1,61 @@
+global
+    log         127.0.0.1 local0
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    maxconn     4000
+    user        haproxy
+    group       haproxy
+    daemon
+    stats socket /var/lib/haproxy/stats
+
+defaults
+    mode                    http
+    log                     global
+    option                  httplog
+    option                  dontlognull
+    #option http-server-close
+    option forwardfor       except 127.0.0.0/8
+    option                  redispatch
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                 3000
+
+frontend openshift-api-server
+    bind *:6443
+    default_backend openshift-api-server
+    mode tcp
+    option tcplog
+
+backend openshift-api-server
+    balance source
+    mode tcp
+    server {{ 'api.' +  ocp.cluster_name  + '.' +  ocp.domain }} {{ ocp.reserved_ip.api }}:6443 check
+
+frontend ingress-http
+    bind *:80
+    default_backend ingress-http
+    mode tcp
+    option tcplog
+
+backend ingress-http
+   balance source
+   mode tcp
+   server {{ 'api.' +  ocp.cluster_name  + '.' +  ocp.domain }} {{ ocp.reserved_ip.api }}:80 check
+
+
+frontend ingress-https
+    bind *:443
+    default_backend ingress-https
+    mode tcp
+    option tcplog
+
+backend ingress-https
+   balance source
+   mode tcp
+   server {{ 'api.' +  ocp.cluster_name  + '.' +  ocp.domain }} {{ ocp.reserved_ip.api }}:443 check

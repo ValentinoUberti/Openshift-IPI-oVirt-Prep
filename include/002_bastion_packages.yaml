@@ -1,0 +1,38 @@
+---
+- name: Bastion packages installer
+  hosts: bastion
+  become: True
+  tasks:
+     
+    - name: Installing required packages for Bastion Vm (Fedora)
+      package:
+        name:
+          - syslinux
+          - dnsmasq-2.80-10.fc31.x86_64 
+          - nginx
+          - nfs-utils
+          - cronie
+          - cronie-anacron
+          - python-netaddr
+          - firewalld
+          - bind-utils
+        state: present
+      when: ansible_distribution == "Fedora"
+
+    - name: Installing required packages for Bastion Vm (Centos 8)
+      package:
+        name:
+          - epel-release
+          - python36
+          - dnsmasq
+          - nfs-utils
+          - tar
+          - firewalld
+          - haproxy
+          - bind-utils
+          - policycoreutils-python-utils
+
+        state: present
+      when: ansible_distribution == "CentOS"
+      
+

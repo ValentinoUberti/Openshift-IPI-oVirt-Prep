@@ -1,0 +1,60 @@
+- name: Bastion services configuration
+  hosts: bastion
+  become: true
+  tasks:
+        
+    - block:
+         
+        - name: Firing dnsmasq template
+          template:
+            src: ../templates/dnsmasq.j2
+            dest: /etc/dnsmasq.conf
+
+        - name: Enabling selinux boolean for haproxy
+          seboolean:
+            name: haproxy_connect_any
+            state: yes
+            persistent: yes 
+    
+        - name: Ensuring /etc/haproxy/haproxy.cfg dosen't exists
+          file:
+            path: /etc/haproxy/haproxy.cfg
+            state: absent
+
+        - name: Firing haproxy template
+          template:
+            src: ../templates/haproxy.j2
+            dest: /etc/haproxy/haproxy.cfg
+        
+        - name: Configure {{ ansible_local.external_connection.conname }} to use {{ networking.internal_network_ip }} as DNS server
+          command: nmcli con mod '{{ ansible_local.external_connection.conname }}' ipv4.dns "{{ networking.internal_network_ip }}" 
+
+        - name: Refreshing {{ ansible_local.external_connection.conname }}
+          shell: nmcli con down "{{ ansible_local.external_connection.conname }}"; nmcli con up "{{ ansible_local.external_connection.conname }}"
+
+        - name: Enabling services
+          service:
+            name: "{{ item }}"
+            enabled: true
+          loop: 
+            - dnsmasq
+            - haproxy
+            
+        - name: Removing resolv.conf
+          file:
+            path: /etc/resolv.conf
+            state: absent
+
+        - name: Rebooting bastion
+          reboot:
+
+        
+        
+          
+      
+
+    
+
+  
+    
+    
