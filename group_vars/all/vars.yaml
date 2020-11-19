@@ -3,7 +3,7 @@ networking:
   internal_network_ip: 172.22.0.1
   internal_network_netmask: 255.255.255.0
   external_dns: 192.168.1.77
-  domain_name: mylab.com
+  domain_name: zmylab.com
 
 dhcp:
   timezone: "Europe/Rome"
