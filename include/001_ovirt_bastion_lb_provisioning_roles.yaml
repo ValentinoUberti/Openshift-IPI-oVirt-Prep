@@ -12,7 +12,7 @@
 
     qcow_url: https://cloud.centos.org/centos/8/x86_64/images/CentOS-8-GenericCloud-8.1.1911-20200113.3.x86_64.qcow2
     template_cluster: "{{ ovirt.cluster }}"
-    template_name: bastion_template
+    template_name: bastion_template_2
     template_memory: 4GiB
     template_cpu: 2
     template_disk_size: 20GiB
@@ -25,7 +25,7 @@
     non_ocp_vm:
       state: running
       cluster: Default
-      template: bastion_template
+      template: bastion_template_2
       memory: 2GiB
       memory_guaranteed: 2Gib
       nics:

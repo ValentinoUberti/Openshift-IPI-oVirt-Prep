@@ -2,6 +2,7 @@
 - name: Networking checks playbook 
   hosts: bastion
   become: True
+  remote_user: root
   tasks:
 
     - name: Checking interfaces

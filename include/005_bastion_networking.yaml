@@ -2,6 +2,7 @@
 - name: Bastion networking playbook 
   hosts: bastion 
   become: True
+  remote_user: root
   vars:
     internal_ip_and_mask: "{{ networking.internal_network_ip }}/{{ networking.internal_network_netmask }}" 
   

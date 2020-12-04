@@ -1,21 +1,21 @@
 networking:
-  internal_network: 172.22.0.0
-  internal_network_ip: 172.22.0.1
+  internal_network: 172.22.1.0
+  internal_network_ip: 172.22.1.1
   internal_network_netmask: 255.255.255.0
-  external_dns: 192.168.1.77
-  domain_name: zmylab.com
+  external_dns: 172.16.0.2
+  domain_name: example2.net
 
 dhcp:
   timezone: "Europe/Rome"
-  start: 172.22.0.201
-  end: 172.22.0.250
+  start: 172.22.1.201
+  end: 172.22.1.250
   ntp: 204.11.201.10
 
 bastion:
   name: bastion
-  public_ip: 192.168.1.101
+  public_ip: 172.19.0.101
   public_netmask: 255.255.255.0
-  public_gateway: 192.168.1.1
+  public_gateway: 172.19.0.1
 
 firewall_services:
   - http
@@ -30,9 +30,9 @@ firewall_public_ha_proxy_port:
 
 ocp:
   reserved_ip:
-    api: 172.22.0.2
-    apps: 172.22.0.3
-    internal_dns: 172.22.0.4 # Used by installer
+    api: 172.22.1.2
+    apps: 172.22.1.3
+    internal_dns: 172.22.1.4 # Used by installer
   cluster_name: ocp
-  domain: mylab.com
+  domain: example2.net
 

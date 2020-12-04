@@ -1,6 +1,7 @@
 - name: Bastion services configuration
   hosts: bastion
   become: true
+  remote_user: root
   tasks:
         
     - block:

@@ -2,6 +2,7 @@
 - name: Bastion packages installer
   hosts: bastion
   become: True
+  remote_user: root
   tasks:
      
     - name: Installing required packages for Bastion Vm (Fedora)

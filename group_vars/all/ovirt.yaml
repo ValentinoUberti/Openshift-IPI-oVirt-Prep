@@ -1,21 +1,21 @@
 ovirt:
-  username: admin@internal
+  username: vale@internal
   ca_file: /etc/pki/ovirt-engine/ca.pem
-  password: XXX
+  password: valevale
   data_center: Default
   cluster: Default
-  host: host.mylab.com
-  engine: manager.mylab.com
+  host: ovirt.righini.local
+  engine: ovengine.righini.local
   storage:
      interface: virtio
-     storage_domain: hosted_storage
+     storage_domain: 2t_2
   network:
     external:
        interface: virtio
-       profile: ovirtmgmt
-       network: ovirtmgmt
+       profile: vlan19
+       network: vlan19
     internal:
        interface: virtio
-       profile: ocp
-       network: ocp
-       host_interface: em2 #Insert oVirt host interface name
+       profile: vlan22_2
+       network: vlan22_2
+       host_interface: eno2 #Insert oVirt host interface name
