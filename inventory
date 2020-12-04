@@ -1,3 +1,5 @@
 [ovirt_engine]
 ovengine.righini.local
 
+[bastion]
+bastion.example2.net

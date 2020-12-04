@@ -65,7 +65,7 @@ ocp:
     apps: 172.22.0.3 # Asked during OCP install
     internal_dns: 172.22.0.4 # Asked during OCP install
   cluster_name: ocp
-  domain: mylab.com
+  
 
 ```
 
@@ -100,33 +100,26 @@ ovirt:
 # Required python packages and version
 
 - ansible==2.9.6
-- ovirt-engine-sdk-python==4.3.0
-- python3-netaddr
 
 # Required roles:
 
 - ovirt.image-template
 - ovirt.vm-infra
 
+# Ansible collection 
+
+- ansible-galaxy collection install ovirt.ovirt
 
 # The bastion vm is tested with Centos 8 Cloud #
 
-- Get the openshift installer from  https://cloud.redhat.com/openshift/install  -> Run on RHV
-- Get the oc cli
-- Get an openshift pullSecret
+- Get an openshift pullSecret from https://cloud.redhat.com/openshift/install  -> Run on RHV
 - Set the pullSecret in group_vars/vars.yaml
 
 The interface and connection name are autodetected
 
 - run $ansible-playbook connected_ipi_install.yaml
 
-- run the openshift installer as documented here:
 
-- https://docs.openshift.com/container-platform/4.5/installing/installing_rhv/installing-rhv-default.html#installing-rhv-default
-
-Depending on the connection speed:
-  - take a coffe
-  - watch a movie
 
 
 

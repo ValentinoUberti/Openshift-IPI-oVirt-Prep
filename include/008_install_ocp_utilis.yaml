@@ -1,0 +1,82 @@
+- name: Ovirt provisioning
+  hosts: ovirt_engine
+  become: True
+  gather_facts: false
+  tasks:
+    - name: Obtain SSO token
+      ovirt_auth:
+        url: https://{{ inventory_hostname }}/ovirt-engine/api
+        username: "{{ ovirt.username }}"
+        ca_file: "{{ ovirt.ca_file }}"
+        password: "{{ ovirt.password }}"
+
+    - ovirt.ovirt.ovirt_cluster_info:
+        auth: "{{ ovirt_auth }}"
+        pattern: "name={{ ovirt.cluster }} and datacenter={{ ovirt.data_center }}"
+        fetch_nested: yes
+      register: result
+
+    
+    - set_fact:
+         ovirt_cluster_id: "{{ result.ovirt_clusters[0].data_center.id }}"
+
+    - ovirt.ovirt.ovirt_storage_domain_info:
+        auth: "{{ ovirt_auth }}"
+        pattern: "name={{ ovirt.storage.storage_domain }} and datacenter={{ ovirt.data_center }}"
+      register: result
+
+    - set_fact:
+         ovirt_storage_domain_id: "{{ result.ovirt_storage_domains[0].id }}"
+
+    - ansible.builtin.debug:
+        msg: "{{ ovirt_storage_domain_id }}"
+ 
+    - ovirt.ovirt.ovirt_network_info:
+        auth: "{{ ovirt_auth }}"
+        fetch_nested: true
+        pattern: "name={{ ovirt.network.internal.network }}"
+      register: result
+       
+    - set_fact:
+         vnicProfileID: "{{ result.ovirt_networks[0].vnic_profiles[0].id }}"
+
+
+- name: Bastion services configuration
+  hosts: bastion
+  become: true
+  remote_user: root
+  tasks:
+
+    - name: Extract and install ovirt CA
+      shell: "{{ item }}"
+      loop:
+        - "curl -k 'https://{{ ovirt.engine }}/ovirt-engine/services/pki-resource?resource=ca-certificate&format=X509-PEM-CA' -o /tmp/ca.pem"
+        - "chmod 0644 /tmp/ca.pem"
+        - "cp -p /tmp/ca.pem /etc/pki/ca-trust/source/anchors/ca.pem"
+        - "update-ca-trust"
+    
+    - name: Creating ssh keys if not exists
+      openssh_keypair:
+        path: "~/.ssh/id_rsa"
+
+    - name: Downloading installer and OCP cli
+      unarchive:
+        src: "{{ item }}"
+        dest: /usr/bin
+        remote_src: yes
+        validate_certs: no
+      become: True
+      loop:
+        - https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-install-linux.tar.gz
+        - https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
+
+
+
+
+
+
+    
+
+    
+     
+      
