@@ -19,5 +19,6 @@ dhcp-option=option:netmask,{{ networking.internal_network_netmask }}
 dhcp-option=option:dns-server,{{ networking.internal_network_ip }}
 dhcp-option=option:ntp-server,{{ dhcp.ntp }}
 dhcp-range={{ansible_local.internal_connection.ifname }},{{ dhcp.start }},{{ dhcp.end }},12h
+listen-address={{ networking.internal_network_ip }}
 ## DHCP end ##
 

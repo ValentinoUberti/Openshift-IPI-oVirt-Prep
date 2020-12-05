@@ -16,7 +16,7 @@ ovirt:
        network: vlan19
     internal:
        interface: virtio
-       profile: vlan22_3
-       network: vlan22_3
+       profile: vlan22_4
+       network: vlan22_4
        host_interface: eno2 #Insert oVirt host interface name
-       vlan_tag: 3
+       vlan_tag: 4

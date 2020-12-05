@@ -1,5 +1,7 @@
 - name: Create admin with cluster admin privileges
   hosts: bastion
+  gather_facts: no
+  remote_user: root
   tasks:
     
     - name: Ensuring httpd-tools is present
@@ -55,8 +57,8 @@
     - name: Creating htpasswd identiry and user
       command: /tmp/ocp_user.sh
 
-    - name: Sleeping 120 seconds...
-      command: sleep 120
+    - name: Sleeping 30 seconds...
+      command: sleep 30
 
     - name: Try to login with admin
       command: > 

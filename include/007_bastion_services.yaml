@@ -49,6 +49,13 @@
         - name: Rebooting bastion
           reboot:
 
+        - name: Restaring dnmasq
+          service:
+            name: "{{ item }}"
+            state: restarted
+          loop: 
+            - dnsmasq
+            
         
         
           
