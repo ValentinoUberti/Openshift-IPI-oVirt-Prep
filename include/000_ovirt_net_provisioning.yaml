@@ -24,7 +24,7 @@
         vm_network: true
         auth: "{{ ovirt_auth }}"
         state: present
-        vlan_tag: 2
+        vlan_tag: "{{ ovirt.network.internal.vlan_tag }}"
 
     - name: Assigning logical network to host network
       ovirt_host_network:

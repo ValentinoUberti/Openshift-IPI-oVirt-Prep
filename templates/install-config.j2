@@ -28,9 +28,9 @@ platform:
   ovirt:
     api_vip: {{ ocp.reserved_ip.api }}
     ingress_vip: {{ ocp.reserved_ip.apps }}
-    ovirt_cluster_id: {{ ovirt_cluster_id }}
+    ovirt_cluster_id: {{  hostvars['DUMMY'].ovirt_cluster_id }}
     ovirt_network_name: {{ ovirt.network.internal.network }}
-    ovirt_storage_domain_id: {{ ovirt_storage_domain_id }}
-    vnicProfileID: {{ vnicProfileID }}
+    ovirt_storage_domain_id: {{  hostvars['DUMMY'].ovirt_storage_domain_id }}
+    vnicProfileID: {{  hostvars['DUMMY'].vnicProfileID }}
 publish: External
-pullSecret: ''
+pullSecret: '{{ ocp.pull_secret }}'

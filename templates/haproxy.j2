@@ -35,7 +35,7 @@ frontend openshift-api-server
 backend openshift-api-server
     balance source
     mode tcp
-    server {{ 'api.' +  ocp.cluster_name  + '.' +  ocp.domain }} {{ ocp.reserved_ip.api }}:6443 check
+    server {{ 'api.' +  ocp.cluster_name  + '.' +  networking.domain_name }} {{ ocp.reserved_ip.api }}:6443 check
 
 frontend ingress-http
     bind *:80
@@ -46,7 +46,7 @@ frontend ingress-http
 backend ingress-http
    balance source
    mode tcp
-   server {{ 'apps.' +  ocp.cluster_name  + '.' +  ocp.domain }} {{ ocp.reserved_ip.apps }}:80 check
+   server {{ 'apps.' +  ocp.cluster_name  + '.' +  networking.domain_name }} {{ ocp.reserved_ip.apps }}:80 check
 
 
 frontend ingress-https
@@ -58,4 +58,4 @@ frontend ingress-https
 backend ingress-https
    balance source
    mode tcp
-   server {{ 'apps.' +  ocp.cluster_name  + '.' +  ocp.domain }} {{ ocp.reserved_ip.apps }}:443 check
+   server {{ 'apps.' +  ocp.cluster_name  + '.' +  networking.domain_name }} {{ ocp.reserved_ip.apps }}:443 check

@@ -4,8 +4,8 @@ server={{ networking.external_dns }}
 
 
 ## Required fqdn and wildcard for OCP ##
-address=/{{ 'api.' +  ocp.cluster_name  + '.' +  ocp.domain }}/{{ ocp.reserved_ip.api }}
-address=/{{ 'apps.' +  ocp.cluster_name  + '.' +  ocp.domain }}/{{ ocp.reserved_ip.apps }}
+address=/{{ 'api.' +  ocp.cluster_name  + '.' +  networking.domain_name }}/{{ ocp.reserved_ip.api }}
+address=/{{ 'apps.' +  ocp.cluster_name  + '.' +  networking.domain_name }}/{{ ocp.reserved_ip.apps }}
 
 ## Required fqdn and wildcard for OCP end ##
 

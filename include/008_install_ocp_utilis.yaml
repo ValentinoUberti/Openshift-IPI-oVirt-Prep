@@ -16,9 +16,9 @@
         fetch_nested: yes
       register: result
 
-    
+               
     - set_fact:
-         ovirt_cluster_id: "{{ result.ovirt_clusters[0].data_center.id }}"
+         ovirt_cluster_id: "{{ result.ovirt_clusters[0].id }}"
 
     - ovirt.ovirt.ovirt_storage_domain_info:
         auth: "{{ ovirt_auth }}"
@@ -40,12 +40,30 @@
     - set_fact:
          vnicProfileID: "{{ result.ovirt_networks[0].vnic_profiles[0].id }}"
 
+    - add_host:
+        name: "DUMMY"
+        ovirt_storage_domain_id: "{{ ovirt_storage_domain_id }}"
+        ovirt_cluster_id: "{{ ovirt_cluster_id }}"
+        vnicProfileID: "{{ vnicProfileID }}"
+
+
+
+
+ 
 
 - name: Bastion services configuration
   hosts: bastion
   become: true
   remote_user: root
   tasks:
+    
+    - debug:
+         msg: "{{  hostvars['DUMMY'].vnicProfileID }}"
+
+    - name: Creating install-config.yaml
+      template:
+        src: ../templates/install-config.j2
+        dest: /root/install-config.yaml
 
     - name: Extract and install ovirt CA
       shell: "{{ item }}"
@@ -55,6 +73,25 @@
         - "cp -p /tmp/ca.pem /etc/pki/ca-trust/source/anchors/ca.pem"
         - "update-ca-trust"
     
+    - name: Loading ovirt ca
+      slurp:
+        src: /tmp/ca.pem
+      register: slurpfile
+
+    - set_fact:
+        ovirt_ca_bundle: "{{ slurpfile['content'] | b64decode }}"
+
+    - name: Creating ovirt-config
+      file:
+        path: /root/.ovirt
+        state: directory
+
+    - template:
+        src: ../templates/ovirt-config.j2
+        dest: /root/.ovirt/ovirt-config.yaml
+        
+      
+
     - name: Creating ssh keys if not exists
       openssh_keypair:
         path: "~/.ssh/id_rsa"
@@ -71,9 +108,18 @@
         - https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz
 
 
+    
 
+    - name: Waiting for install to complete (TAKE A COFFEE)
+      command: openshift-install create cluster --dir /root
+      #retries: 2000
+      #delay: 30
+      register: result
+      #until: result.rc == 0
 
-
+    - name: Jedy
+      debug:
+        msg: May OCP will be with you
 
     
 

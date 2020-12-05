@@ -1,0 +1,9 @@
+ovirt_url: https://{{ ovirt.engine }}/ovirt-engine/api
+ovirt_fqdn: {{ ovirt.engine }}
+ovirt_pem_url: https://{{ ovirt.engine }}/ovirt-engine/services/pki-resource?resource=ca-certificate&format=X509-PEM-CA
+ovirt_username: {{ ovirt.username }}
+ovirt_password: {{ ovirt.password }}
+ovirt_ca_bundle: |-
+{% filter indent(width=2,indentfirst=True) %}
+{{ ovirt_ca_bundle }}
+{% endfilter %}

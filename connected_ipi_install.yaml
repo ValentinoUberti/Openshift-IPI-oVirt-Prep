@@ -6,3 +6,4 @@
 - import_playbook: include/005_bastion_networking.yaml
 - import_playbook: include/007_bastion_services.yaml
 - import_playbook: include/008_install_ocp_utilis.yaml
+- import_playbook: include/010_add_default_admin_user.yaml
