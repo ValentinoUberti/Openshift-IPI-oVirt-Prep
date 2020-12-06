@@ -1,7 +1,7 @@
 ovirt:
   username: vale@internal
   ca_file: /etc/pki/ovirt-engine/ca.pem
-  password: valevale
+  password: <insert-pass-here>
   data_center: Default
   cluster: Default
   host: ovirt.righini.local
@@ -16,7 +16,7 @@ ovirt:
        network: vlan19
     internal:
        interface: virtio
-       profile: vlan22_4
-       network: vlan22_4
-       host_interface: eno2 #Insert oVirt host interface name
-       vlan_tag: 4
+       profile: vlan_1
+       network: vlan_1
+       host_interface: ens786f1 #Insert oVirt host interface name
+       vlan_tag: 1

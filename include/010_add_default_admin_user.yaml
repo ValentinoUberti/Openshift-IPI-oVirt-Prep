@@ -64,4 +64,6 @@
       command: > 
                /usr/bin/oc login -u {{ ocp.user }} -p {{ ocp.pass }} 
                https://api.{{ ocp.cluster_name }}.{{ networking.domain_name }}:6443 --config /root/auth/kubeconfig
-      retries: 10   
+      retries: 30
+      register: command
+      until: command.rc == 0   

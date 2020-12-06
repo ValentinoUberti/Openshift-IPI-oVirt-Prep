@@ -112,10 +112,10 @@
 
     - name: Waiting for install to complete (TAKE A COFFEE)
       command: openshift-install create cluster --dir /root
-      retries: 2000
-      delay: 30
-      register: result
-      until: result.rc == 0
+      #retries: 2000
+      #delay: 30
+      #register: result
+      #until: result.rc == 0
 
     - name: Jedy
       debug:
