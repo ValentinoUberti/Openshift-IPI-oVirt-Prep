@@ -28,7 +28,7 @@
             dest: /etc/haproxy/haproxy.cfg
         
         - name: Configure {{ ansible_local.external_connection.conname }} to use {{ networking.internal_network_ip }} as DNS server
-          command: nmcli con mod '{{ ansible_local.external_connection.conname }}' ipv4.dns "{{ networking.internal_network_ip }}" 
+          command: nmcli con mod '{{ ansible_local.external_connection.conname }}' ipv4.dns "{{ networking.internal_network_ip }}" autoconnect yes
 
         - name: Refreshing {{ ansible_local.external_connection.conname }}
           shell: nmcli con down "{{ ansible_local.external_connection.conname }}"; nmcli con up "{{ ansible_local.external_connection.conname }}"

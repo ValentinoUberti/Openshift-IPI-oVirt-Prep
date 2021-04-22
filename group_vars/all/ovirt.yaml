@@ -1,11 +1,11 @@
 ovirt:
   username: vale@internal
   ca_file: /etc/pki/ovirt-engine/ca.pem
-  password: <insert-pass-here>
+  password: valevale
   data_center: Default
   cluster: Default
-  host: ovirt.righini.local
-  engine: ovengine.righini.local
+  host: ovirt01
+  engine: ovengine01.seeweb.local
   storage:
      interface: virtio
      storage_domain: 2t_2
@@ -16,7 +16,7 @@ ovirt:
        network: vlan19
     internal:
        interface: virtio
-       profile: vlan_1
-       network: vlan_1
-       host_interface: ens786f1 #Insert oVirt host interface name
-       vlan_tag: 1
+       profile: vlan_2
+       network: vlan_2
+       host_interface: eno2 #Insert oVirt host interface name
+       vlan_tag: 2

@@ -21,7 +21,7 @@
     - name: Creating yaml configuration for htpasswd identity provider
       template:
         src: ../templates/htpasswd_provider.j2
-        dest: "/root/htpasswd_provider.yaml"
+        dest: "/root/install/htpasswd_provider.yaml"
 
     - template:
         src: ../templates/ocp_user_script.j2
@@ -63,7 +63,7 @@
     - name: Try to login with admin
       command: > 
                /usr/bin/oc login -u {{ ocp.user }} -p {{ ocp.pass }} 
-               https://api.{{ ocp.cluster_name }}.{{ networking.domain_name }}:6443 --config /root/auth/kubeconfig
+               https://api.{{ ocp.cluster_name }}.{{ networking.domain_name }}:6443 --kubeconfig /root/install/auth/kubeconfig
       retries: 30
       register: command
       until: command.rc == 0   

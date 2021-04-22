@@ -3,6 +3,9 @@ server={{ networking.external_dns }}
 ## External dns end ##
 
 
+address=/ovengine01.seeweb.local/172.25.0.36
+
+
 ## Required fqdn and wildcard for OCP ##
 address=/{{ 'api.' +  ocp.cluster_name  + '.' +  networking.domain_name }}/{{ ocp.reserved_ip.api }}
 address=/{{ 'apps.' +  ocp.cluster_name  + '.' +  networking.domain_name }}/{{ ocp.reserved_ip.apps }}

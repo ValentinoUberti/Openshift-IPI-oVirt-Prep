@@ -1,5 +1,5 @@
 [ovirt_engine]
-ovengine.righini.local
+ovengine01.seeweb.local
 
 [bastion]
-bastion.example1.net
+bastion.example.seeweb
