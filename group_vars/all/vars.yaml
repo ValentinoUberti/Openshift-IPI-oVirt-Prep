@@ -12,7 +12,7 @@ dhcp:
   ntp: 204.11.201.10
 
 bastion:
-  name: bastion
+  name: bastion2
   public_ip: 172.19.0.102
   public_netmask: 255.255.255.0
   public_gateway: 172.19.0.1

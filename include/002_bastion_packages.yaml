@@ -3,8 +3,15 @@
   hosts: bastion
   become: True
   remote_user: root
+  gather_facts: no
   tasks:
      
+    - name: Wait for system to become reachable
+      wait_for_connection:
+
+    - name: Gather facts for first time
+      setup:
+
     - name: Installing required packages for Bastion Vm (Fedora)
       package:
         name:

@@ -1,5 +1,3 @@
 [ovirt_engine]
 ovengine01.seeweb.local
 
-[bastion]
-bastion.example.seeweb

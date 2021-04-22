@@ -19,7 +19,7 @@
     template_disk_storage: "{{ ovirt.storage.storage_domain }}"
     template_disk_bootable: true
     template_nics: []
-    template_seal: false
+    template_seal: true
 
     debug_vm_create: yes
     non_ocp_vm:
@@ -28,6 +28,7 @@
       template: bastion_template_3
       memory: 2GiB
       memory_guaranteed: 2Gib
+      clone: yes
       nics:
           - name: eth0
             interface: "{{ ovirt.network.external.interface }}" 
