@@ -13,7 +13,7 @@
       when: ansible_local.internal_connection.ifname not in ansible_facts.interfaces
     
     - name: Adding connection {{ ansible_local.internal_connection.conname }} to internal zone
-      command: nmcli con mod '{{ ansible_local.internal_connection.conname }}' connection.zone internal     
+      command: nmcli con add con-name '{{ ansible_local.internal_connection.conname }}' ifname '{{ ansible_local.internal_connection.conname }}' connection.zone internal  type ethernet   
 
     - name: Setting Bastion static ip configuration
       command: > 

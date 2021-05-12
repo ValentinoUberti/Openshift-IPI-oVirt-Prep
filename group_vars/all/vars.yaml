@@ -2,8 +2,8 @@ networking:
   internal_network: 172.27.4.0
   internal_network_ip: 172.27.4.1
   internal_network_netmask: 255.255.255.0
-  external_dns: 172.16.0.2
-  domain_name: example1.net
+  external_dns: 10.40.0.20
+  domain_name: example.net
 
 dhcp:
   timezone: "Europe/Rome"
@@ -13,9 +13,9 @@ dhcp:
 
 bastion:
   name: bastion
-  public_ip: 172.19.0.102
+  public_ip: 10.40.0.156
   public_netmask: 255.255.255.0
-  public_gateway: 172.19.0.1
+  public_gateway: 10.40.0.254
 
 
 firewall_services:
