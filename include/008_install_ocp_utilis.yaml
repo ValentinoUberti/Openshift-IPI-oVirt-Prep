@@ -60,15 +60,7 @@
     - debug:
          msg: "{{  hostvars['DUMMY'].vnicProfileID }}"
 
-    - name: Creating install dir
-      file:
-        path: /root/install
-        state: directory
-
-    - name: Creating install-config.yaml
-      template:
-        src: ../templates/install-config.j2
-        dest: /root/install/install-config.yaml
+   
 
     - name: Extract and install ovirt CA
       shell: "{{ item }}"
@@ -101,6 +93,22 @@
       openssh_keypair:
         path: "~/.ssh/id_rsa"
 
+    - name: Loading bastion ssh public key
+      slurp:
+        src: "~/.ssh/id_rsa.pub"
+      register: ssh_key    
+
+    - name: Creating install dir
+      file:
+        path: /root/install
+        state: directory
+
+    - name: Creating install-config.yaml
+      template:
+        src: ../templates/install-config.j2
+        dest: /root/install/install-config.yaml
+
+    
     - name: Downloading installer and OCP cli
       unarchive:
         src: "{{ item }}"

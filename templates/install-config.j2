@@ -5,15 +5,22 @@ compute:
   hyperthreading: Enabled
   name: worker
   platform: {}
-  replicas: 3
+  replicas: 2
+  platform:
+    ovirt:
+      affinityGroupsNames:
+      - compute
 controlPlane:
   architecture: amd64
   hyperthreading: Enabled
   name: master
   platform: {}
   replicas: 3
+  platform:
+    ovirt:
+      affinityGroupsNames:
+      - controlplane
 metadata:
-  creationTimestamp: null
   name: {{ ocp.cluster_name }}
 networking:
   clusterNetwork:
@@ -21,7 +28,7 @@ networking:
     hostPrefix: 23
   machineNetwork:
   - cidr: 10.0.0.0/16
-  networkType: OpenShiftSDN
+  networkType: KubernetesOVN
   serviceNetwork:
   - 172.30.0.0/16
 platform:
@@ -32,5 +39,18 @@ platform:
     ovirt_network_name: {{ ovirt.network.internal.network }}
     ovirt_storage_domain_id: {{  hostvars['DUMMY'].ovirt_storage_domain_id }}
     vnicProfileID: {{  hostvars['DUMMY'].vnicProfileID }}
+    affinityGroups:
+    - description: AffinityGroup for spreading each compute machine to a different
+        host
+      enforcing: false
+      name: compute
+      priority: 3
+    - description: AffinityGroup for spreading each control plane machine to a different
+        host
+      enforcing: false
+      name: controlplane
+      priority: 5
+
 publish: External
 pullSecret: '{{ ocp.pull_secret }}'
+sshKey: '{{ ssh_key }}'
