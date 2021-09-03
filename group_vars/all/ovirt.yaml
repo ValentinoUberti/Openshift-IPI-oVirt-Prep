@@ -1,11 +1,11 @@
 ovirt:
   username: vale@internal
   ca_file: /etc/pki/ovirt-engine/ca.pem
-  password: valevale
+  password: 
   data_center: Default
   cluster: Default
   host: ovirt01
-  engine: ovengine01.seeweb.local
+  engine: 
   storage:
      interface: virtio
      storage_domain: 2t_2

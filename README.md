@@ -1,6 +1,6 @@
-## oVirt prerequisite for Openshift 4.5.x install
+## oVirt prerequisite for Openshift 4.8.x install
 
-This sets of playbooks will setup oVirt networking and a Bastion vm for running OCP 4.5.x IPI installer
+This sets of playbooks will setup oVirt networking and a Bastion vm for running OCP 4.8.x IPI installer
 
 # Features
 
