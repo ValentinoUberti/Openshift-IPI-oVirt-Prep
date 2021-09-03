@@ -5,10 +5,10 @@
   remote_user: root
   tasks:
 
-    - name: Checking interfaces
-      fail:
-        msg: The host {{ inventory_hostname }} must have two interfaces
-      when: ansible_interfaces | length != 3
+    #- name: Checking interfaces
+    #  fail:
+    #    msg: The host {{ inventory_hostname }} must have two interfaces
+    #  when: ansible_interfaces | length != 3
 
 
     - name: Activating firewalld
@@ -44,6 +44,8 @@
       when: 
         - item !='lo'
         - item != first_interface
+        - item !='virbr0'
+        - item !='virbr0-nic'
       with_items:
         - "{{ ansible_interfaces }}"
 
@@ -89,6 +91,10 @@
          conname: "{{ first_connection_name.stdout }}"
       failed_when: first_connection_name.stdout is not defined
 
+    - debug:
+        var: conname
+
+
     - name: Testing interface and connection name for {{ inventory_hostname }}
       fail:
         msg: Unable to retrieve connection name for {{ inventory_hostname }}
@@ -104,7 +110,10 @@
          ifname: "{{ second_interface }}"
 
     - set_fact:
-         conname: "{{ second_connection_name.stdout }}"
+         conname: "{{ second_interface }}"
+
+    - debug:
+        var: conname
       
     - name: Testing interface and connection name for {{ inventory_hostname }}
       fail:
